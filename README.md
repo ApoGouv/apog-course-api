@@ -48,13 +48,24 @@ php artisan db:seed --class=CourseSeeder
 php artisan migrate:refresh --seed
 ```
 
-### 3. Set Swagger HOST 
+## Set Swagger HOST 
 
 If your dev app runs on different domain than `http://127.0.0.1:8000`, you should modify the swagger HOST entry found in the `.env` file.
 
 ```sh
 L5_SWAGGER_CONST_HOST='http://127.0.0.1:8000'
 ```
+
+## Run with laravel's local development server:
+
+```sh
+cd apog-course-api
+
+php artisan serve
+
+```
+
+Then you will see a message like: `Server running on [http://127.0.0.1:8000].`
 
 ## App Routes
 
@@ -108,4 +119,4 @@ L5_SWAGGER_CONST_HOST='http://127.0.0.1:8000'
 
 Visit `/api/documentation#/Courses`
 
-e.g. `[http://127.0.0.1:8000/api/documentation#/Courses](http://127.0.0.1:8000/api/documentation#/Courses)`
+e.g. [http://127.0.0.1:8000/api/documentation#/Courses](http://127.0.0.1:8000/api/documentation#/Courses)
