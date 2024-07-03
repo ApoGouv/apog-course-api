@@ -1,0 +1,384 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Courses API Documentation",
+        "description": "Documentation for courses REST API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/v1"
+        }
+    ],
+    "paths": {
+        "/courses": {
+            "get": {
+                "tags": [
+                    "courses"
+                ],
+                "summary": "Get list of courses",
+                "description": "Returns list of courses",
+                "operationId": "getCoursesList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseResource"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "courses"
+                ],
+                "summary": "Store new course",
+                "description": "Returns course data",
+                "operationId": "storeCourse",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreCourseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Course created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseResource"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to store course"
+                    }
+                }
+            }
+        },
+        "/courses/{id}": {
+            "get": {
+                "tags": [
+                    "courses"
+                ],
+                "summary": "Get course information by ID",
+                "description": "Returns course data",
+                "operationId": "getCourseById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Course id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    },
+                    "500": {
+                        "description": "Failed to retrieve course"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "courses"
+                ],
+                "summary": "Update existing course",
+                "description": "Returns updated course data",
+                "operationId": "updateCourse",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Course id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCourseRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Course updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CourseResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    },
+                    "500": {
+                        "description": "Failed to update course"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "courses"
+                ],
+                "summary": "Delete existing course",
+                "description": "Soft deletes a course record",
+                "operationId": "deleteCourse",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Course id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Course deleted successfully"
+                    },
+                    "404": {
+                        "description": "Course not found"
+                    },
+                    "500": {
+                        "description": "Failed to delete course"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Course": {
+                "title": "Course",
+                "description": "Course model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of the course",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "Title of the course",
+                        "type": "string",
+                        "example": "Learn OpenAPI documentation"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "Description of the course",
+                        "type": "string",
+                        "example": "This is the course's description blah blah blah"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "description": "Status of the course",
+                        "type": "string",
+                        "enum": [
+                            "Published",
+                            "Pending"
+                        ],
+                        "example": "Pending"
+                    },
+                    "is_premium": {
+                        "title": "Is premium",
+                        "description": "Set if course is premium",
+                        "type": "boolean",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2024-01-27 10:05:35"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Course"
+                }
+            },
+            "CourseFull": {
+                "title": "Course Full",
+                "description": "Course model with all properties",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Course"
+                    },
+                    {
+                        "properties": {
+                            "deleted_at": {
+                                "description": "Deleted at",
+                                "type": "string",
+                                "format": "datetime",
+                                "example": "2024-07-01 06:50:45"
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "StoreCourseRequest": {
+                "title": "Store Course request",
+                "description": "Store Course request body data",
+                "required": [
+                    "title",
+                    "description",
+                    "status",
+                    "is_premium"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "title",
+                        "description": "Title of the new course",
+                        "type": "string",
+                        "example": "Learn OpenAPI documentation part 1"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "Description of the course",
+                        "type": "string",
+                        "example": "This is the course's description blah blah blah"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "description": "Status of the course",
+                        "type": "string",
+                        "enum": [
+                            "Published",
+                            "Pending"
+                        ],
+                        "example": "Pending"
+                    },
+                    "is_premium": {
+                        "title": "Is premium",
+                        "description": "Set if course is premium",
+                        "type": "boolean",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateCourseRequest": {
+                "title": "Update Course request",
+                "description": "Update Course request body data",
+                "required": [
+                    "title",
+                    "description",
+                    "status",
+                    "is_premium"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "title",
+                        "description": "Title of the new course",
+                        "type": "string",
+                        "example": "Learn OpenAPI documentation part 1"
+                    },
+                    "description": {
+                        "title": "Description",
+                        "description": "Description of the course",
+                        "type": "string",
+                        "example": "This is the course's description blah blah blah"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "description": "Status of the course",
+                        "type": "string",
+                        "enum": [
+                            "Published",
+                            "Pending"
+                        ],
+                        "example": "Pending"
+                    },
+                    "is_premium": {
+                        "title": "Is premium",
+                        "description": "Set if course is premium",
+                        "type": "boolean",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "CourseResource": {
+                "title": "CourseResource",
+                "description": "Course resource",
+                "properties": {
+                    "data": {
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Course"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CourseResource"
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "courses",
+            "description": "courses"
+        },
+        {
+            "name": "courses",
+            "description": "courses"
+        },
+        {
+            "name": "courses",
+            "description": "courses"
+        },
+        {
+            "name": "courses",
+            "description": "courses"
+        },
+        {
+            "name": "courses",
+            "description": "courses"
+        }
+    ]
+}
